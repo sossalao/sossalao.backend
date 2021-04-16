@@ -159,6 +159,9 @@ namespace sossalao.Core.Data
 			var xpto = new StockAndProcedure()
 			{ stockId = Stock.idStock, procedureId = ProcedureHair.idProcedure , requiredQuantity = 10 };
 			dbContext.TB_StockAndProcedure.Add(xpto);
+			var xptoo1 = new StockAndProcedure()
+			{ stockId = Stock2.idStock, procedureId = ProcedureHair.idProcedure, requiredQuantity = 5 };
+			dbContext.TB_StockAndProcedure.Add(xptoo1);
 			var xpto1 = new StockAndProcedure()
 			{ stockId = Stock2.idStock, procedureId = ProcedureEstetica.idProcedure, requiredQuantity = 1 };
 			dbContext.TB_StockAndProcedure.Add(xpto1);

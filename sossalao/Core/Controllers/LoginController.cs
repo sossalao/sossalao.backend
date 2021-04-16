@@ -11,7 +11,9 @@ using System.Threading.Tasks;
 namespace sossalao.Core.Controllers
 {
     [Route("api/[controller]")]
-	public class LoginController : Controller
+    [Authorize("Bearer", Roles = "Master, HotScissor")]
+
+    public class LoginController : Controller
 	{
         readonly DataBaseContext context;
         public LoginController(DataBaseContext contexto)
@@ -23,7 +25,7 @@ namespace sossalao.Core.Controllers
         public IActionResult CreateLogin([FromBody] Login login)
         {
             if (!ModelState.IsValid)
-                return BadRequest("Não foi possivel cadastrar, dados fora de padrão!");
+                return BadRequest(DefaultMessages.nonStandardCreate);
 
             Security security = new Security();
             login.password = security.cryptopass(login.password);
@@ -31,7 +33,7 @@ namespace sossalao.Core.Controllers
             context.TB_Login.Add(login);
             int rs = context.SaveChanges();
             if (rs < 1)
-                return BadRequest("Houve uma falha interna e não foi possivel cadastrar");
+                return BadRequest(DefaultMessages.internalfailureCreate);
             else
                 return Ok(login);
         }
@@ -52,7 +54,7 @@ namespace sossalao.Core.Controllers
         public IActionResult UpdateLogin([FromBody] Login login, int id)
         {
             if (!ModelState.IsValid)
-                return BadRequest("não foi possivel enviar os dados para atualizar");
+                return BadRequest(DefaultMessages.nonStandardUpdate);
             var x = context.TB_Login.Where(y => y.IdLogin == id).FirstOrDefault();
 
             x.accessLevel = login.accessLevel;
@@ -63,7 +65,24 @@ namespace sossalao.Core.Controllers
             context.TB_Login.Update(x);
             int rs = context.SaveChanges();
             if (rs < 1)
-                return BadRequest("Houve uma falha interna e não foi possivel atualizar");
+                return BadRequest(DefaultMessages.internalfailureUpdate);
+            else
+                return Ok(login);
+        }
+
+        [HttpPut("password/{id}")]
+        public IActionResult UpdatePasswordLogin([FromBody] Login login, int id)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(DefaultMessages.nonStandardUpdate);
+            var x = context.TB_Login.Where(y => y.IdLogin == id).FirstOrDefault();
+
+            x.password = login.password;
+
+            context.TB_Login.Update(x);
+            int rs = context.SaveChanges();
+            if (rs < 1)
+                return BadRequest(DefaultMessages.internalfailureUpdate);
             else
                 return Ok(login);
         }
@@ -73,7 +92,7 @@ namespace sossalao.Core.Controllers
         {
             var x = context.TB_Login.Where(y => y.IdLogin == id).FirstOrDefault();
             if (x == null)
-                return BadRequest("Usuario não encontrado.");
+                return BadRequest(DefaultMessages.notFound);
 
             context.TB_Login.Remove(x);
             int rs = context.SaveChanges();

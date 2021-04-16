@@ -1,0 +1,28 @@
+version: '3.4'
+
+services:
+  sossalao:
+    depends_on:
+    - db
+    image: ${DOCKER_REGISTRY-}sossalao
+    build:
+      context: .
+      dockerfile: sossalao/Dockerfile
+    external_links:
+      - db:db
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: 1
+      MYSQL_DATABASE: dbsossalao
+      MYSQL_USER: sossalao
+      MYSQL_PASSWORD: sosdb21!
+    ports: 
+      - "13306:35005"
+    external_links:
+        - sossalao:sossalao
+    volumes:
+      - dbdata:/var/lib/mysql
+    restart: always
+volumes:
+  dbdata:
