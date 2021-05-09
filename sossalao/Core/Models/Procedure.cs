@@ -19,8 +19,7 @@ namespace sossalao.Core.Models
 		public TimeSpan estimitedTime { get; set; }
 		public TypeArea typeArea { get; set; }
 
-		public ICollection<ComboAndProcedure> ComboAndProcedure { get; set; }
-		public ICollection<StockAndProcedure> ProcedureAndStocks { get; set; }
-		public Sale Sale { get; set; }
+		//public ICollection<ComboAndProcedure> ComboAndProcedure { get; set; }
+		//public ICollection<StockAndProcedure> ProcedureAndStocks { get; set; }
 	}
 }

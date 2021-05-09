@@ -17,11 +17,8 @@ namespace sossalao.Core.Models
 		public string description { get; set; }
 		[Required(ErrorMessage = "Você precisa inserir o preço do combo")]
 		public decimal price { get; set; }
-		//[Required(ErrorMessage = "Você precisa selecionar os procedimentos do combo.")]
-	//	public List<Procedure> procudures { get; } = new List<Procedure>();
 
-		public ICollection<ComboAndProcedure> ComboAndProcedure { get; set; }
-		public Sale Sale { get; set; }
+		//public ICollection<ComboAndProcedure> ComboAndProcedure { get; set; }
 
 	}
 }

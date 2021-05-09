@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using sossalao.Core.Data;
@@ -30,10 +31,10 @@ namespace sossalao
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddDbContext<DataBaseContext>(opt =>
-			   opt.UseMySql(Configuration.GetConnectionString("bancodados"))
-			   );
-			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+			services.AddControllers();
+			services.AddCors();
+			services.AddDbContext<DataBaseContext>(opt => opt.UseMySql(Configuration.GetConnectionString("bancodados")));
+			//services.AddMvc();//.SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
 			var signingConfigurations = new SigningConfigurations();
 			services.AddSingleton(signingConfigurations);
@@ -65,19 +66,25 @@ namespace sossalao
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
 			}
-			else
-			{
-				app.UseHsts();
-			}
+			app.UseRouting();
 
-			app.UseHttpsRedirection();
-			app.UseMvc();
+			app.UseAuthorization();
+			//app.UseCors(option => option.AllowAnyOrigin());
+			app.UseCors(option => option
+				.AllowAnyOrigin()
+				.AllowAnyMethod()
+				.AllowAnyHeader());
+			app.UseEndpoints(endpoints =>
+			{
+				endpoints.MapControllers();
+			});
+
 		}
 	}
 }
