@@ -11,7 +11,7 @@ using sossalao.Core.Utils;
 namespace sossalao.Core.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize("Bearer", Roles = "Master, HotScissor, BluntScissor")]
+    //[Authorize("Bearer", Roles = "Master, HotScissor, BluntScissor")]
     public class PeopleController : Controller
 	{
         readonly DataBaseContext context;

@@ -24,10 +24,8 @@ namespace sossalao.Core.Data
 		public DbSet<Product> TB_Product { get; set; }
 		public DbSet<Sale> TB_Sale { get; set; }
 		public DbSet<Scheduling> TB_Scheduling { get; set; }
-		//public DbSet<Stock> TB_Stock { get; set; }
 		public DbSet<StockAndProcedure> TB_StockAndProcedure { get; set; }
 		public DbSet<Supplier> TB_Supplier { get; set; }
-		//public DbSet<ProcedureAndStock> TB_ProcedureAndStock { get; set; }
 		protected override void OnModelCreating(ModelBuilder mb)
 		{
 			#region ToTable and Haskey of all Model's.
@@ -44,6 +42,8 @@ namespace sossalao.Core.Data
 			//mb.Entity<Stock>().ToTable("TB_Stock").HasKey(a => a.idStock);
 			//mb.Entity<Supplier>().ToTable("TB_Supplier").HasKey(a => a.idSupplier);
 			#endregion
+			mb.Entity<Procedure>().ToTable("TB_Procedure").HasKey(an => an.idProcedure);
+
 
 			//		#region HasConversion enum to int of all Model's.
 			//mb.Entity<People>().Property(e => e.typePeople).HasConversion(x => (int)x, x => (TypePeople)x);

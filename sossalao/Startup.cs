@@ -33,8 +33,14 @@ namespace sossalao
 		{
 			services.AddControllers();
 			services.AddCors();
-			services.AddDbContext<DataBaseContext>(opt => opt.UseMySql(Configuration.GetConnectionString("bancodados")));
+			//services.AddDbContext<DataBaseContext>(opt => opt.UseMySql(Configuration.GetConnectionString("bancodados")));
 			//services.AddMvc();//.SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+			var connectionString = Configuration.GetConnectionString("bancodados");
+
+			services.AddDbContext<DataBaseContext>(options =>
+				options.UseMySql(
+					connectionString,                             // <-- set the connection string to use by Pomelo
+					ServerVersion.AutoDetect(connectionString)));
 
 			var signingConfigurations = new SigningConfigurations();
 			services.AddSingleton(signingConfigurations);
