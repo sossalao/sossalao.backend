@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using sossalao.Core.Models;
+using sossalao.Core.Utils;
 
 namespace sossalao.Core.Data
 {
@@ -10,6 +11,7 @@ namespace sossalao.Core.Data
 	{
 		public static void Init(DataBaseContext dbContext)
 		{
+            Security security = new Security();
 			dbContext.Database.EnsureCreated();
 			if (dbContext.TB_People.Any()) { return; }
 
@@ -31,6 +33,15 @@ namespace sossalao.Core.Data
 			};
 			dbContext.TB_People.Add(PeopleEmployee);
 
+			var Dev = new People()
+			{
+				name = "Developer",
+				email = "developer@live.com",
+				phoneNumber = "5511961235780",
+				typePeople = Utils.TypePeople.Employee
+			};
+			dbContext.TB_People.Add(Dev);
+
 			var Login = new Login()
 			{
 				peopleId = PeopleEmployee.idPeople,
@@ -41,6 +52,17 @@ namespace sossalao.Core.Data
 				typeArea = Utils.TypeArea.CabeleireiroHairStylist
 			};
 			dbContext.TB_Login.Add(Login);
+
+			var LoginDev = new Login()
+			{
+				peopleId = PeopleEmployee.idPeople,
+				user = "hrqlp",
+				password = security.cryptopass("devsos21!"),
+				accessLevel = Utils.AccessLevel.Master,
+				typeEmployee = Utils.TypeEmployee.Efetivo,
+				typeArea = Utils.TypeArea.Esteticismo
+			};
+			dbContext.TB_Login.Add(LoginDev);
 
 			var ProductHair = new Product()
 			{
@@ -81,23 +103,23 @@ namespace sossalao.Core.Data
 				supplierId = Supp.idSupplier
 			};
 			dbContext.TB_Stock.Add(Stock2);
-			//var Stock00 = new Stock()
-			//{
-			//	productId = ProductHair.idProduct,
-			//	quantity = 240,
-			//	typeProduct = Utils.TypeProduct.Xampu,
-			//	supplierId = Supp.idSupplier
-			//};
-			//dbContext.TB_Stock.Add(Stock00);
+			var Stock00 = new Stock()
+			{
+				productId = ProductHair.idProduct,
+				quantity = 240,
+				typeProduct = Utils.TypeProduct.Xampu,
+				supplierId = Supp.idSupplier
+			};
+			dbContext.TB_Stock.Add(Stock00);
 
-			//var Stock01 = new Stock()
-			//{
-			//	productId = ProductEstetica.idProduct,
-			//	quantity = 80,
-			//	typeProduct = Utils.TypeProduct.Mascara,
-			//	supplierId = Supp.idSupplier
-			//};
-			//dbContext.TB_Stock.Add(Stock01);
+			var Stock01 = new Stock()
+			{
+				productId = ProductEstetica.idProduct,
+				quantity = 80,
+				typeProduct = Utils.TypeProduct.Mascara,
+				supplierId = Supp.idSupplier
+			};
+			dbContext.TB_Stock.Add(Stock01);
 
 
 
@@ -121,21 +143,21 @@ namespace sossalao.Core.Data
 			};
 			dbContext.TB_Procedure.Add(ProcedureEstetica);
 
-			//var Relation_ProcedureStock00 = new StockAndProcedure()
-			//{
-			//	//StockId = Stock00.idStock,
-			//	procedureId = ProcedureHair.idProcedure
-			//	//,requiredQuantity = 2 
-			//};
-			//dbContext.TB_StockAndProcedure.Add(Relation_ProcedureStock00);
+			var Relation_ProcedureStock00 = new StockAndProcedure()
+			{
+				stockId = Stock00.idStock,
+				procedureId = ProcedureHair.idProcedure
+				,requiredQuantity = 2 
+			};
+			dbContext.TB_StockAndProcedure.Add(Relation_ProcedureStock00);
 
-			//var Relation_ProcedureStock01 = new StockAndProcedure()
-			//{
-			//	//StockId = Stock01.idStock,
-			//	procedureId = ProcedureEstetica.idProcedure
-			//	//,requiredQuantity = 1 
-			//};
-			//dbContext.TB_StockAndProcedure.Add(Relation_ProcedureStock01);
+			var Relation_ProcedureStock01 = new StockAndProcedure()
+			{
+				stockId = Stock01.idStock,
+				procedureId = ProcedureEstetica.idProcedure
+				,requiredQuantity = 1 
+			};
+			dbContext.TB_StockAndProcedure.Add(Relation_ProcedureStock01);
 
 			var Combo = new Combo()
 			{
