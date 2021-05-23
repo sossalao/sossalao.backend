@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace sossalao.Core.Controllers
 {
 	[Route("api/[controller]")]
-	//[Authorize("Bearer", Roles = "Master, HotScissor, BluntScissor")]
+	[Authorize("Bearer", Roles = "Master, HotScissor, BluntScissor")]
 
 	public class ProcController : Controller
 	{
