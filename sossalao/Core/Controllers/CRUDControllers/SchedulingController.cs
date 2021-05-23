@@ -6,6 +6,7 @@ using sossalao.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace sossalao.Core.Controllers
@@ -43,6 +44,18 @@ namespace sossalao.Core.Controllers
         public Scheduling ReadOneScheduling(int id)
         {
             return context.TB_Scheduling.Where(x => x.idScheduling == id).FirstOrDefault();
+        }
+        [HttpGet("range")]
+        public IActionResult ReadRangeaScheduling([FromQuery] DateTime startDate, DateTime? endDate)
+        {
+            if(endDate < startDate){
+                return ValidationProblem(DefaultMessages.DateValidationProblem, null, 422,"Valide as datas."); 
+            }
+            if(endDate != null && endDate > startDate)
+            {
+                return Ok(context.TB_Scheduling.Where(x => x.checkIn >= startDate && x.checkIn <= endDate).FirstOrDefault());
+            }
+            return Ok(context.TB_Scheduling.Where(x => x.checkIn >= startDate).FirstOrDefault());
         }
 
         [HttpPut("{id}")]

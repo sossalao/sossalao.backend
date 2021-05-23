@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace sossalao.Core.Controllers
 {
-	//[Authorize("Bearer", Roles = "Master, HotScissor, BluntScissor")]
+	[Authorize("Bearer", Roles = "Master, HotScissor, BluntScissor")]
 	[Route("api/[controller]")]
 	public class ProcedureController : Controller
 	{

@@ -42,7 +42,6 @@ namespace sossalao.Core.Data
 			//mb.Entity<Stock>().ToTable("TB_Stock").HasKey(a => a.idStock);
 			//mb.Entity<Supplier>().ToTable("TB_Supplier").HasKey(a => a.idSupplier);
 			#endregion
-			mb.Entity<Procedure>().ToTable("TB_Procedure").HasKey(an => an.idProcedure);
 
 
 			//		#region HasConversion enum to int of all Model's.

@@ -12,6 +12,7 @@ namespace sossalao.Core.Utils
 		public const string internalfailureCreate = "Ocorreu uma falha interna e não foi possível cadastrar.";
 		public const string internalfailureUpdate = "Ocorreu uma falha interna e não foi possível atualizar.";
 		public const string notFound = "Não foi encontrado.";
+		public const string DateValidationProblem = "Por favor, valide as datas! Pois a data final tem que ser maior que a data incial.";
 
 	}
 }
