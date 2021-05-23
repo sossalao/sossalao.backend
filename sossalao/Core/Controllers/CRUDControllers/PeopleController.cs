@@ -44,7 +44,7 @@ namespace sossalao.Core.Controllers
             return context.TB_People.Where(x => x.idPeople == id).FirstOrDefault();
         }
 
-        //[Authorize("Bearer", Roles = "Master, HotScissor")]
+        [Authorize("Bearer", Roles = "Master, HotScissor")]
         [HttpPut("{id}")]
         public IActionResult UpdatePeople([FromBody] People people, int id)
         {
