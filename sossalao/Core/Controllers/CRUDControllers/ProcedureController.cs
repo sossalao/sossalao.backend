@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using sossalao.Core.Data;
 using sossalao.Core.Models;
+using sossalao.Core.Models.DTO;
 using sossalao.Core.Utils;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace sossalao.Core.Controllers
 {
-	[Authorize("Bearer", Roles = "Master, HotScissor, BluntScissor")]
+	//[Authorize("Bearer", Roles = "Master, HotScissor, BluntScissor")]
 	[Route("api/[controller]")]
 	public class ProcedureController : Controller
 	{
@@ -20,7 +21,8 @@ namespace sossalao.Core.Controllers
 			this.context = contexto;
 		}
 		#region Controller Procedure
-		[HttpPost]
+		
+		[HttpPost("antigo")]
 		public IActionResult CreateProcedure([FromBody] Procedure procedure)
 		{
 			if (!ModelState.IsValid)
