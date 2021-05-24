@@ -9,12 +9,14 @@ namespace sossalao.Core.Data
 {
 	public class InitDB
 	{
+		
 		public static void Init(DataBaseContext dbContext)
 		{
             Security security = new Security();
 			dbContext.Database.EnsureCreated();
 			if (dbContext.TB_People.Any()) { return; }
 
+#region People
 			var PeopleClient = new People()
 			{
 				name = "Agatha Lorena Gomes",
@@ -32,7 +34,6 @@ namespace sossalao.Core.Data
 				typePeople = Utils.TypePeople.Employee
 			};
 			dbContext.TB_People.Add(PeopleEmployee);
-
 			var Dev = new People()
 			{
 				name = "Developer",
@@ -41,7 +42,9 @@ namespace sossalao.Core.Data
 				typePeople = Utils.TypePeople.Employee
 			};
 			dbContext.TB_People.Add(Dev);
+#endregion
 
+#region Login
 			var Login = new Login()
 			{
 				peopleId = PeopleEmployee.idPeople,
@@ -63,14 +66,16 @@ namespace sossalao.Core.Data
 				typeArea = Utils.TypeArea.Esteticismo
 			};
 			dbContext.TB_Login.Add(LoginDev);
+#endregion
 
-			var ProductHair = new Product()
+#region Product's
+			var ProductShampoo = new Product()
 			{
 				name = "Xampú RankaKaspa",
 				make = "Kikabelo",
 				description = "Xampú anticaspa profissional."
 			};
-			dbContext.TB_Product.Add(ProductHair);
+			dbContext.TB_Product.Add(ProductShampoo);
 
 			var ProductEstetica = new Product()
 			{
@@ -79,7 +84,26 @@ namespace sossalao.Core.Data
 				description = "Esfoliante profissional."
 			};
 			dbContext.TB_Product.Add(ProductEstetica);
+			
+			var ProductDesmaquilante = new Product()
+			{
+				name = "Água Micelar 5 em 1",
+				make = "L'Oréal Paris",
+				description = "Água micelar de l'oréal paris é a solução de limpeza facial que foi especialmente desenvolvida para limpar a pele, "+
+				"e sua embalagem de 100ml é perfeita para guardar em sua necessaire e levar em viagens. Com o alto poder de limpeza e purificação, sua fórmula "+
+				"capta e elimina as impurezas e maquiagem, revelando uma pele perfeitamente limpa, reequilibrada e suave sem agredi-la. Feita para todos os tipos de pele."
+			};
+			dbContext.TB_Product.Add(ProductDesmaquilante);
+			var ProductAcetona = new Product()
+			{
+				name = "Removedor de Esmaltes Zero Acetona Aroma Uva",
+				make = "Beira Alta",
+				description = "Removedor sem acetona, vit e e b5, óleos vegetais, cálcio, dermatologicamente testado. Remove sem esbranquiçar. Hipoalegênico. Remove esmaltes sem esbranquiçar com aroma de uva. "
+			};
+			dbContext.TB_Product.Add(ProductAcetona);
+#endregion
 
+#region Supplier
 			var Supp = new Supplier()
 			{
 				supplierName = "Perfurmaria Amaral LTDA",
@@ -87,42 +111,45 @@ namespace sossalao.Core.Data
 				description = "Perfurmaria mais barata de produtos em geral."
 			};
 			dbContext.TB_Supplier.Add(Supp);
-			var Stock = new Stock()
+#endregion
+
+#region Stock
+			var StockAcetona = new Stock()
 			{
-				productId = ProductHair.idProduct,
+				productId = ProductAcetona.idProduct,
 				quantity = 240,
-				typeProduct = Utils.TypeProduct.Xampu,
+				typeProduct = Utils.TypeProduct.Condicionador,
 				supplierId = Supp.idSupplier
 			};
-			dbContext.TB_Stock.Add(Stock);
-			var Stock2 = new Stock()
+			dbContext.TB_Stock.Add(StockAcetona);
+			var StockEstetica = new Stock()
 			{
 				productId = ProductEstetica.idProduct,
 				quantity = 80,
 				typeProduct = Utils.TypeProduct.Mascara,
 				supplierId = Supp.idSupplier
 			};
-			dbContext.TB_Stock.Add(Stock2);
-			var Stock00 = new Stock()
+			dbContext.TB_Stock.Add(StockEstetica);
+			var StockShampoo = new Stock()
 			{
-				productId = ProductHair.idProduct,
+				productId = ProductShampoo.idProduct,
 				quantity = 240,
 				typeProduct = Utils.TypeProduct.Xampu,
 				supplierId = Supp.idSupplier
 			};
-			dbContext.TB_Stock.Add(Stock00);
+			dbContext.TB_Stock.Add(StockShampoo);
 
-			var Stock01 = new Stock()
+			var StockDesmaquilante = new Stock()
 			{
-				productId = ProductEstetica.idProduct,
-				quantity = 80,
-				typeProduct = Utils.TypeProduct.Mascara,
+				productId = ProductDesmaquilante.idProduct,
+				quantity = 55,
+				typeProduct = Utils.TypeProduct.Desmaquilante,
 				supplierId = Supp.idSupplier
 			};
-			dbContext.TB_Stock.Add(Stock01);
+			dbContext.TB_Stock.Add(StockDesmaquilante);
+#endregion
 
-
-
+#region Procedure
 			var ProcedureHair = new Procedure()
 			{
 				name = "Hidratação Capilar",
@@ -142,22 +169,52 @@ namespace sossalao.Core.Data
 				typeArea = Utils.TypeArea.Esteticismo
 			};
 			dbContext.TB_Procedure.Add(ProcedureEstetica);
+#endregion
 
-			var Relation_ProcedureStock00 = new StockAndProcedure()
+#region Procedure <-> Stock
+		//Relação de produtos usados em 'Hidratação Capilar'. 
+			var StockProcedureHair = new StockAndProcedure()
 			{
-				stockId = Stock00.idStock,
+				stockId = StockShampoo.idStock,
 				procedureId = ProcedureHair.idProcedure
 				,requiredQuantity = 2 
 			};
-			dbContext.TB_StockAndProcedure.Add(Relation_ProcedureStock00);
+			dbContext.TB_StockAndProcedure.Add(StockProcedureHair);
 
-			var Relation_ProcedureStock01 = new StockAndProcedure()
+			var StockProcedureHairTWO = new StockAndProcedure()
+			{ 
+				stockId = StockAcetona.idStock, 
+				procedureId = ProcedureHair.idProcedure, 
+				requiredQuantity = 10 
+			};
+			dbContext.TB_StockAndProcedure.Add(StockProcedureHairTWO);
+			
+			var StockProcedureHairThree = new StockAndProcedure()
+			{ 
+				stockId = StockEstetica.idStock, 
+				procedureId = ProcedureHair.idProcedure, 
+				requiredQuantity = 5 
+			};
+			dbContext.TB_StockAndProcedure.Add(StockProcedureHairThree);
+		//Relação de produtos usados em 'Limpeza de pele'.
+			var StockProcedureEstetica = new StockAndProcedure()
 			{
-				stockId = Stock01.idStock,
+				stockId = StockDesmaquilante.idStock,
 				procedureId = ProcedureEstetica.idProcedure
 				,requiredQuantity = 1 
 			};
-			dbContext.TB_StockAndProcedure.Add(Relation_ProcedureStock01);
+			dbContext.TB_StockAndProcedure.Add(StockProcedureEstetica);
+
+			var StockProcedureEsteticaTWO = new StockAndProcedure()
+			{ 
+				stockId = StockEstetica.idStock, 
+				procedureId = ProcedureEstetica.idProcedure, 
+				requiredQuantity = 1 
+			};
+			dbContext.TB_StockAndProcedure.Add(StockProcedureEsteticaTWO);
+#endregion
+
+#region Combo
 
 			var Combo = new Combo()
 			{
@@ -167,6 +224,9 @@ namespace sossalao.Core.Data
 				price = 69.90M				
 			};
 			dbContext.TB_Combo.Add(Combo);
+#endregion
+
+#region  Procedure <-> Combo
 
 			var Relation_ComboProcedure00 = new ComboAndProcedure(){comboId = Combo.idCombo, procedureId = ProcedureHair.idProcedure};
 			dbContext.TB_ComboAndProcedure.Add(Relation_ComboProcedure00);
@@ -177,17 +237,9 @@ namespace sossalao.Core.Data
 				procedureId = ProcedureEstetica.idProcedure 
 			};
 			dbContext.TB_ComboAndProcedure.Add(Relation_ComboProcedure01);
+#endregion
 
-			var xpto = new StockAndProcedure()
-			{ stockId = Stock.idStock, procedureId = ProcedureHair.idProcedure , requiredQuantity = 10 };
-			dbContext.TB_StockAndProcedure.Add(xpto);
-			var xptoo1 = new StockAndProcedure()
-			{ stockId = Stock2.idStock, procedureId = ProcedureHair.idProcedure, requiredQuantity = 5 };
-			dbContext.TB_StockAndProcedure.Add(xptoo1);
-			var xpto1 = new StockAndProcedure()
-			{ stockId = Stock2.idStock, procedureId = ProcedureEstetica.idProcedure, requiredQuantity = 1 };
-			dbContext.TB_StockAndProcedure.Add(xpto1);
-
+#region Sale
 			var Sale = new Sale()
 			{
 				comboId = Combo.idCombo,
@@ -196,7 +248,9 @@ namespace sossalao.Core.Data
 				procedureId = ProcedureHair.idProcedure
 			};
 			dbContext.TB_Sale.Add(Sale);
+#endregion
 
+#region Scheduling
 			var Scheduling = new Scheduling()
 			{
 				checkIn = new DateTime(2021, 08, 20, 16, 30, 0),
@@ -207,6 +261,7 @@ namespace sossalao.Core.Data
 				status = Utils.StatusScheduling.Marcado
 			};
 			dbContext.TB_Scheduling.Add(Scheduling);
+#endregion
 
 			dbContext.SaveChanges();
 		}
