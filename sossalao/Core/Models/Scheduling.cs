@@ -17,14 +17,14 @@ namespace sossalao.Core.Models
 		public int employeeId { get; set; }
 		[ForeignKey("People"), Required]
 		public int clientId { get; set; }
-		[ForeignKey("Sale"), Required]
-		public int saleId { get; set; }
+		[ForeignKey("Procedure"), Required]
+		public int procedureId { get; set; }
 		[Required]
 		public StatusScheduling status { get; set; }
 
-		public Sale Sale { get; set; }
-		public Login Login { get; set; }
-		public People People { get; set; }
+		private Procedure Procedure { get; set; }
+		private Login Login { get; set; }
+		private People People { get; set; }
 
 	}
 }

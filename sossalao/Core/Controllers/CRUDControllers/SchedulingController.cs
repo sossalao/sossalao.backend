@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace sossalao.Core.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize("Bearer", Roles = "Master, HotScissor, BluntScissor")]
+    //[Authorize("Bearer", Roles = "Master, HotScissor, BluntScissor")]
     public class SchedulingController : Controller
 	{
         readonly DataBaseContext context;
@@ -51,11 +51,33 @@ namespace sossalao.Core.Controllers
             if(endDate < startDate){
                 return ValidationProblem(DefaultMessages.DateValidationProblem, null, 422,"Valide as datas."); 
             }
-            if(endDate != null && endDate > startDate)
+            if(endDate != null && endDate >= startDate)
             {
-                return Ok(context.TB_Scheduling.Where(x => x.checkIn >= startDate && x.checkIn <= endDate).FirstOrDefault());
+                return Ok(context.TB_Scheduling.Where(x => x.checkIn >= startDate && x.checkOut <= endDate).ToList());
             }
-            return Ok(context.TB_Scheduling.Where(x => x.checkIn >= startDate).FirstOrDefault());
+            if (endDate != null && endDate == startDate)
+            {
+                startDate = startDate.AddHours(23);
+                return Ok(context.TB_Scheduling.Where(x => x.checkIn >= endDate && x.checkOut <= startDate).ToList());
+            }
+            return Ok(context.TB_Scheduling.Where(x => x.checkIn >= startDate).ToList());
+        }
+
+        [HttpGet("funcionariodisponivel")]
+        public IActionResult ReadRangeFuncionarioScheduling([FromQuery] DateTime startDate, DateTime? endDate, int FuncionarioDisponivel)
+        {
+            if (endDate < startDate && FuncionarioDisponivel == 0)
+            {
+                return ValidationProblem(DefaultMessages.DateValidationProblem, null, 422, "Valide as datas e funcionario.");
+            }
+            if (endDate != null && endDate > startDate)
+            {
+                return Ok(context.TB_Scheduling.Where(x => x.checkIn >= startDate && x.checkIn <= endDate && x.employeeId != FuncionarioDisponivel).ToList());
+			}
+			else
+			{
+                return BadRequest(context.TB_Scheduling.Where(x => x.checkIn >= startDate && x.checkIn <= endDate && x.employeeId == FuncionarioDisponivel).ToList());
+            }
         }
 
         [HttpPut("{id}")]
@@ -69,7 +91,7 @@ namespace sossalao.Core.Controllers
             x.checkOut = scheduling.checkOut;
             x.clientId = scheduling.clientId;
             x.employeeId = scheduling.employeeId;
-            x.saleId = scheduling.saleId;
+            x.procedureId = scheduling.procedureId;
             x.status = scheduling.status;
 
             context.TB_Scheduling.Update(x);

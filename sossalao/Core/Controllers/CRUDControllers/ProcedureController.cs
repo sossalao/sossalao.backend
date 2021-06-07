@@ -91,29 +91,5 @@ namespace sossalao.Core.Controllers
 		}
 		#endregion
 
-		#region Controller StockAndProcedure
-		[HttpPost("sap")]
-		public IActionResult CreateSAP([FromBody] StockAndProcedure sap)
-		{
-			if (!ModelState.IsValid)
-				return BadRequest(DefaultMessages.nonStandardCreate);
-			context.TB_StockAndProcedure.Add(sap);
-			int rs = context.SaveChanges();
-			if (rs < 1)
-				return BadRequest(DefaultMessages.internalfailureCreate);
-			else
-				return Ok(sap);
-		}
-		[HttpGet("sap/{id}")]
-		public StockAndProcedure ReadSAP(int id)
-		{
-			return context.TB_StockAndProcedure.Where(x => x.idStockAndProcedure == id).FirstOrDefault();
-		}
-		[HttpGet("sap-list/{id}")]
-		public StockAndProcedure ReadSAPlist(int id)
-		{
-			return context.TB_StockAndProcedure.Where(x => x.procedureId == id).FirstOrDefault();
-		}
-		#endregion
 	}
 }

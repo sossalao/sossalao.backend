@@ -18,8 +18,5 @@ namespace sossalao.Core.Models
 		public decimal price { get; set; }
 		public TimeSpan estimitedTime { get; set; }
 		public TypeArea typeArea { get; set; }
-
-		//public ICollection<ComboAndProcedure> ComboAndProcedure { get; set; }
-		//public ICollection<StockAndProcedure> ProcedureAndStocks { get; set; }
 	}
 }

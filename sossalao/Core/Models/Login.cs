@@ -12,15 +12,7 @@ namespace sossalao.Core.Models
 		[StringLength(30, MinimumLength = 4, ErrorMessage = "Você precisa inserir o nome de usuario")]
 		public string user { get; set; }
 
-		[Required,
-		StringLength(
-			255
-			//,ErrorMessage = "The {0} must be at least {2} characters long.",
-			//MinimumLength = 6
-			),
-		//RegularExpression(@"^((?=.*[a-z])(?=.*[A-Z])(?=.*\d)).+$"),
-		DataType(DataType.Password),
-		Display(Name = "Password")]
+		[Required,StringLength(255)]
 		public string password { get; set; }
 		[Required]
 		public TypeArea typeArea { get; set; }
@@ -31,6 +23,6 @@ namespace sossalao.Core.Models
 		[ForeignKey("People"), Required]
 		public int peopleId { get; set; }
 
-		public People People { get; set; }
+		private People People { get; set; }
 	}
 }

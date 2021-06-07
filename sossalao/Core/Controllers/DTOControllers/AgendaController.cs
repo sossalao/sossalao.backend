@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using sossalao.Core.Data;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,8 @@ using System.Threading.Tasks;
 namespace sossalao.Core.Controllers.DTOControllers
 {
 	[Route("api/[controller]")]
+	[Authorize("Bearer", Roles = "Master, HotScissor, BluntScissor")]
+
 	public class AgendaController : Controller
 	{
 
@@ -44,5 +47,8 @@ namespace sossalao.Core.Controllers.DTOControllers
 				return Ok(query);
 			}
 		}
+
+		
+		}
 	}
-}
+
