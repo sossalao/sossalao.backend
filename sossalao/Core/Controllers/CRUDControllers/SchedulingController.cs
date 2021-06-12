@@ -12,8 +12,8 @@ using System.Threading.Tasks;
 namespace sossalao.Core.Controllers
 {
     [Route("api/[controller]")]
-    //[Authorize("Bearer", Roles = "Master, HotScissor, BluntScissor")]
-    public class SchedulingController : Controller
+	[Authorize("Bearer", Roles = "Master, HotScissor, BluntScissor")]
+	public class SchedulingController : Controller
 	{
         readonly DataBaseContext context;
         public SchedulingController(DataBaseContext contexto)
@@ -25,7 +25,7 @@ namespace sossalao.Core.Controllers
         public IActionResult CreateScheduling([FromBody] Scheduling scheduling)
         {
             if (!ModelState.IsValid)
-                return BadRequest(DefaultMessages.nonStandardCreate);
+                return ValidationProblem(DefaultMessages.nonStandardCreate, null, 422, "por favor, valide o objeto enviado.");
             context.TB_Scheduling.Add(scheduling);
             int rs = context.SaveChanges();
             if (rs < 1)

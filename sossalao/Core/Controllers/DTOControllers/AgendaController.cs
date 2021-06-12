@@ -31,17 +31,19 @@ namespace sossalao.Core.Controllers.DTOControllers
 							 join b in _context.TB_Login on a.employeeId equals b.IdLogin
 							 join c in _context.TB_People on a.clientId equals c.idPeople
 							 join d in _context.TB_People on b.peopleId equals d.idPeople
+							 join e in _context.TB_Procedure on a.procedureId equals e.idProcedure
 
 							 select new
 							 {
 								id_scheduling = a.idScheduling,
-								status_scheduling = a.status.ToString(),
+								status_scheduling =  Convert.ToString(a.status),//a.status,
 								check_in = a.checkIn,
 								check_out = a.checkOut,
 								//employee_id = a.employeeId,
-								employee = d,
-								//client_id = a.clientId
-								client = c
+								employee = d.name,
+								procedure = e.name,
+								 //client_id = a.clientId
+								 client = c.name
 							 }).ToList();
 
 				return Ok(query);

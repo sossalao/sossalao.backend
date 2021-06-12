@@ -11,7 +11,7 @@ using sossalao.Core.Utils;
 namespace sossalao.Core.Controllers
 {
 	[Route("api/[controller]")]
-	//[Authorize("Bearer", Roles = "Master, HotScissor, BluntScissor")]
+	[Authorize("Bearer", Roles = "Master, HotScissor, BluntScissor")]
 	public class PeopleController : Controller
 	{
 		readonly DataBaseContext context;
@@ -23,7 +23,7 @@ namespace sossalao.Core.Controllers
 		public IActionResult CreatePeople([FromBody] People people)
 		{
 			if (!ModelState.IsValid)
-				return BadRequest(DefaultMessages.nonStandardCreate);
+				return ValidationProblem(DefaultMessages.nonStandardCreate,null,422,"por favor, valide o objeto enviado.");
 			context.TB_People.Add(people);
 			int rs = context.SaveChanges();
 			if (rs < 1)
@@ -50,7 +50,7 @@ namespace sossalao.Core.Controllers
 		}
 
 		[HttpGet]
-		public IEnumerable<People> ReadPeople(string? name)
+		public IEnumerable<People> ReadPeople([FromQuery] string? name)
 		{
 			if (name != null)
 			{
