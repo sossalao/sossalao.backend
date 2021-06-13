@@ -31,8 +31,8 @@ namespace sossalao.Core.Utils
         Atendido,
         [Description("Cancelado")]
         Cancelado,
-        [Description("Marcado")]
-        Marcado
+        [Description("emAberto")]
+        EmAberto
     }
     public enum TypePeople
     {

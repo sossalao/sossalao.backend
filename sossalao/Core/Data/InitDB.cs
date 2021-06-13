@@ -105,7 +105,7 @@ namespace sossalao.Core.Data
 				procedureId = ProcedureHair.idProcedure,
 				employeeId = Login.IdLogin,
 				clientId = PeopleClient.idPeople,
-				status = Utils.StatusScheduling.Marcado
+				status = Utils.StatusScheduling.EmAberto
 			};
 			dbContext.TB_Scheduling.Add(Scheduling);
 			var Scheduling2 = new Scheduling()
@@ -115,7 +115,7 @@ namespace sossalao.Core.Data
 				procedureId = ProcedureHair.idProcedure,
 				employeeId = Login.IdLogin,
 				clientId = PeopleClient.idPeople,
-				status = Utils.StatusScheduling.Marcado
+				status = Utils.StatusScheduling.EmAberto
 			};
 			dbContext.TB_Scheduling.Add(Scheduling2);
 			var Scheduling1 = new Scheduling()
@@ -125,7 +125,7 @@ namespace sossalao.Core.Data
 				procedureId = ProcedureHair.idProcedure,
 				employeeId = Login.IdLogin,
 				clientId = PeopleEmployee.idPeople,
-				status = Utils.StatusScheduling.Marcado
+				status = Utils.StatusScheduling.EmAberto
 			};
 			dbContext.TB_Scheduling.Add(Scheduling1);
 			#endregion
