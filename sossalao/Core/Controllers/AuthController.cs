@@ -85,9 +85,9 @@ namespace sossalao.Core.Controllers
 				{
 					retorno = new { authenticated = false, codErro =200, message = "Sua senha está incorreta. Confira-a." };
 				}
-				if(isActiveError == null)
+				if(isActiveError != null)
 				{
-					retorno = new { authenticated = false,  codErro =300, message = "O nome de usuário inserido não pertence a uma conta. Verifique seu nome de usuário e tente novamente." };
+					retorno = new { authenticated = false,  codErro =300, message = "O usuário inserido foi desativado." };
 				}
 				return BadRequest(retorno);
 
