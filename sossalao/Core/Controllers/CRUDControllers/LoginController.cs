@@ -49,7 +49,12 @@ namespace sossalao.Core.Controllers
         {
             return context.TB_Login.Where(x => x.IdLogin == id).FirstOrDefault();
         }
-
+        [HttpGet("p/{id}")]
+        public Login ReadOneLoginPeople(int id)
+        {
+            return context.TB_Login.Where(x => x.peopleId == id).FirstOrDefault();
+        }
+    	[Authorize("Bearer", Roles = "Master")]
         [HttpPut("{id}")]
         public IActionResult UpdateLogin([FromBody] Login login, int id)
         {
@@ -87,6 +92,21 @@ namespace sossalao.Core.Controllers
                 return Ok(login);
         }
 
+        [HttpDelete("i/{id}")]
+        public IActionResult DeleteActiveLogin(int id)
+        {
+            var x = context.TB_Login.Where(y => y.IdLogin == id).FirstOrDefault();
+            if (x == null)
+                return BadRequest(DefaultMessages.notFound);
+            x.isActive = 0;
+
+            context.TB_Login.Update(x);
+            int rs = context.SaveChanges();
+            if (rs < 1)
+                return BadRequest();
+            else
+                return Ok(ReadOneLogin(id));
+        }
         [HttpDelete("{id}")]
         public IActionResult DeleteLogin(int id)
         {

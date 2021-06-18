@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MySql.Data.MySqlClient;
 using sossalao.Core.Data;
 using sossalao.Core.Models;
 using sossalao.Core.Models.DTO;
@@ -34,6 +35,7 @@ namespace EiCara
 
 			return ProcedureToDTO(recipe);
 		}
+		[Authorize("Bearer", Roles = "Master")]
 		[HttpPost("procedure")]
 		public async Task<ActionResult<ProcedureDTO>> CreateProcedureDTO(ProcedureDTO procedureDTO)
 		{
@@ -53,6 +55,25 @@ namespace EiCara
 				nameof(GetItemProcedure),
 				new { id = rs.idProcedure },
 				ProcedureToDTO(rs));
+		}
+		[Authorize("Bearer", Roles = "Master")]
+		[HttpPut("procedure/{id}")]
+		public async Task<ActionResult<ProcedureDTO>> UpdateProcedureDTO(ProcedureDTO procedureDTO, int id)
+		{
+			var x = _context.TB_Procedure.Where(y => y.idProcedure == id).FirstOrDefault();
+
+			x.name = procedureDTO.name;
+			x.description = procedureDTO.description;
+			x.estimitedTime = new System.TimeSpan(0, procedureDTO.estimitedTime, 0);
+			x.typeArea = procedureDTO.typeArea;
+			
+			_context.TB_Procedure.Update(x);
+			await _context.SaveChangesAsync();
+
+			return CreatedAtAction(
+				nameof(GetItemProcedure),
+				new { id = x.idProcedure },
+				ProcedureToDTO(x));
 		}
 		private static Procedure ProcedureToDTO(Procedure procedure) =>
 			new Procedure

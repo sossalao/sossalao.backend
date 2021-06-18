@@ -48,13 +48,13 @@ namespace sossalao.Core.Controllers
 			return context.TB_Procedure.Where(x => x.idProcedure == id).FirstOrDefault();
 		}
 		[HttpGet("get-area/{id}")]
-		public Procedure GetProcdureAreas(int id)
+		public IEnumerable<Procedure> GetProcdureAreas(int id)
 		{
-			return context.TB_Procedure.Where(x => Convert.ToInt32(x.typeArea) == id).FirstOrDefault();
+			return context.TB_Procedure.Where(x => Convert.ToInt32(x.typeArea) == id).ToList();
 		}
 
-		[Authorize("Bearer", Roles = "Master, HotScissor")]
-		[HttpPut("{id}")]
+		[Authorize("Bearer", Roles = "Master")]
+		[HttpPut("antigo/{id}")]
 		public IActionResult UpdateProcedure([FromBody] Procedure procedure, int id)
 		{
 			if (!ModelState.IsValid)
@@ -75,7 +75,7 @@ namespace sossalao.Core.Controllers
 		}
 
 		[HttpDelete("{id}")]
-		[Authorize("Bearer", Roles = "Master, HotScissor")]
+		[Authorize("Bearer", Roles = "Master")]
 		public IActionResult DeleteProcedure(int id)
 		{
 			var x = context.TB_Procedure.Where(y => y.idProcedure == id).FirstOrDefault();

@@ -84,7 +84,7 @@ namespace sossalao.Core.Controllers
         public IActionResult UpdateScheduling([FromBody] Scheduling scheduling, int id)
         {
             if (!ModelState.IsValid)
-                return BadRequest(DefaultMessages.nonStandardUpdate);
+                return ValidationProblem(DefaultMessages.nonStandardUpdate);
             var x = context.TB_Scheduling.Where(y => y.idScheduling == id).FirstOrDefault();
 
             x.checkIn = scheduling.checkIn;

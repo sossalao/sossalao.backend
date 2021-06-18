@@ -48,7 +48,6 @@ namespace sossalao.Core.Controllers
 			else
 				return Ok(peoples);
 		}
-
 		[HttpGet]
 		public IEnumerable<People> ReadPeople([FromQuery] string? name)
 		{
@@ -73,7 +72,7 @@ namespace sossalao.Core.Controllers
 		public IActionResult UpdatePeople([FromBody] People people, int id)
 		{
 			if (!ModelState.IsValid)
-				return BadRequest(DefaultMessages.nonStandardUpdate);
+				return ValidationProblem(DefaultMessages.nonStandardUpdate);
 			var x = context.TB_People.Where(y => y.idPeople == id).FirstOrDefault();
 
 			x.name = people.name;

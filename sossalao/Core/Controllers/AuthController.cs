@@ -31,7 +31,7 @@ namespace sossalao.Core.Controllers
 		{
 			Security security = new Security();
 			login.password = security.cryptopass(login.password);
-			Login user = _context.TB_Login.FirstOrDefault(us => us.user == login.user && us.password == login.password);
+			Login user = _context.TB_Login.FirstOrDefault(us => us.user == login.user && us.password == login.password && us.isActive == 1);
 			if (user != null)
 			{
 				ClaimsIdentity Identity = new ClaimsIdentity(
@@ -68,14 +68,29 @@ namespace sossalao.Core.Controllers
 					created = creationDate.ToString("yyyy-MM-dd HH:mm:ss"),
 					expiration = expirationDate.ToString("yyyy-MM-dd HH:mm:ss"),
 					accessToken = token,
-					message = "OK"
+					message = "Bem-vindo ao S.O.S Salão."
 				};
 				return Ok(retorno);
 			}
 			else
-			{
-				var retorno = new { authenticated = false, message = "Falha ao autenticar" };
+			{	var usernameError = _context.TB_Login.FirstOrDefault(us => us.user == login.user);
+				var passwordError = _context.TB_Login.FirstOrDefault(us => us.password == login.password);
+				var isActiveError = _context.TB_Login.FirstOrDefault(us => us.isActive == 1);
+				var retorno = new { authenticated = false, codErro = 0,  message = "" };
+				if(usernameError == null)
+				{
+					retorno = new { authenticated = false, codErro =100, message = "O nome de usuário inserido não pertence a uma conta. Verifique seu nome de usuário e tente novamente." };
+				}
+				if(usernameError != null && passwordError == null)
+				{
+					retorno = new { authenticated = false, codErro =200, message = "Sua senha está incorreta. Confira-a." };
+				}
+				if(isActiveError == null)
+				{
+					retorno = new { authenticated = false,  codErro =300, message = "O nome de usuário inserido não pertence a uma conta. Verifique seu nome de usuário e tente novamente." };
+				}
 				return BadRequest(retorno);
+
 			}
 		}
 	}

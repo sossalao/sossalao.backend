@@ -49,8 +49,9 @@ namespace sossalao.Core.Data
 			{
 				peopleId = PeopleEmployee.idPeople,
 				user = "marinasouza",
-				password = "!Mariana30#",
+				password = security.cryptopass("devsos21!"),
 				accessLevel = Utils.AccessLevel.Master,
+				isActive = 1,
 				typeEmployee = Utils.TypeEmployee.Efetivo,
 				typeArea = Utils.TypeArea.CabeleireiroHairStylist
 			};
@@ -58,10 +59,11 @@ namespace sossalao.Core.Data
 
 			var LoginDev = new Login()
 			{
-				peopleId = PeopleEmployee.idPeople,
+				peopleId = Dev.idPeople,
 				user = "hrqlp",
 				password = security.cryptopass("devsos21!"),
 				accessLevel = Utils.AccessLevel.Master,
+				isActive = 1,
 				typeEmployee = Utils.TypeEmployee.Efetivo,
 				typeArea = Utils.TypeArea.Esteticismo
 			};

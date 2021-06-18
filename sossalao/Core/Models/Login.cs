@@ -19,10 +19,12 @@ namespace sossalao.Core.Models
 		[Required]
 		public TypeEmployee typeEmployee { get; set; }
 		[Required]
+		public int isActive { get; set; }
+		[Required]
 		public AccessLevel accessLevel { get; set; }
 		[ForeignKey("People"), Required]
 		public int peopleId { get; set; }
 
-		private People People { get; set; }
+		public People People { get; set; }
 	}
 }

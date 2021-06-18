@@ -4,9 +4,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace sossalao.Core.Models
 {
-	public class People
-	{
+    public class People
+    {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column(Order=1)]
         public int idPeople { get; set; }
         [Required, StringLength(150, ErrorMessage = "Você precisa inserir o nome da pessoa.")]
         public string name { get; set; }
@@ -16,5 +17,8 @@ namespace sossalao.Core.Models
         public string email { get; set; }
         [Required]
         public TypePeople typePeople { get; set; }
-	}
+
+        public Login Login { get; set; }
+
+    }
 }

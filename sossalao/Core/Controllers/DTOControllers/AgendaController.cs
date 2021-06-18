@@ -110,7 +110,7 @@ namespace sossalao.Core.Controllers.DTOControllers
                          join c in _context.TB_People on a.clientId equals c.idPeople
                          join d in _context.TB_People on b.peopleId equals d.idPeople
                          join e in _context.TB_Procedure on a.procedureId equals e.idProcedure
-                            where a.checkIn >= startDate && a.checkOut <= endDate
+                            where a.checkIn >= startDate && a.checkIn <= endDate
                          select new
                          {
                              id_scheduling = a.idScheduling,
