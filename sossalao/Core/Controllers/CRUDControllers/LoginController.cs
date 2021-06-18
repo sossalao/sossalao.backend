@@ -59,20 +59,24 @@ namespace sossalao.Core.Controllers
         public IActionResult UpdateLogin([FromBody] Login login, int id)
         {
             if (!ModelState.IsValid)
-                return BadRequest(DefaultMessages.nonStandardUpdate);
+                return ValidationProblem(DefaultMessages.nonStandardUpdate);
             var x = context.TB_Login.Where(y => y.IdLogin == id).FirstOrDefault();
 
-            x.accessLevel = login.accessLevel;
-            x.password = login.password;
+            Security security = new Security();
+            x.user = login.user;
+            x.password = security.cryptopass(login.password);
             x.typeArea = login.typeArea;
             x.typeEmployee = login.typeEmployee;
+            x.isActive = login.isActive;
+            x.accessLevel = login.accessLevel;
+            x.peopleId = login.peopleId;
 
             context.TB_Login.Update(x);
             int rs = context.SaveChanges();
             if (rs < 1)
                 return BadRequest(DefaultMessages.internalfailureUpdate);
             else
-                return Ok(login);
+                return Ok(ReadOneLogin(id));
         }
 
         [HttpPut("password/{id}")]
